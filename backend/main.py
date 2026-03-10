@@ -1,8 +1,9 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
+import schemas
 
 app = FastAPI()
 
@@ -21,7 +22,8 @@ app.add_middleware(
 )
 
 # --------------- Sample Data ------------------------
-
+# Should i use dictionaries inside a list or dictionaries inside a dictionary for data???
+# User Data
 userData = [
     {
         "user_id": 101,
@@ -245,6 +247,7 @@ userData = [
     }
 ]
 
+# Resume Data
 resumeData = [
     {
         "resume_id": 1,
@@ -447,30 +450,60 @@ resumeData = [
         "education": "B.A. Marketing"
     }
 ]
-
+    
 # --------------- Home Routes ------------------------
 @app.get('/')
-def read_root():
+def home():
     return {'message': 'SwiftHire Backend is live.'}
 
 # --------------- User Routes ------------------------
 # Displaying user list
 @app.get("/user/list")
-def getUserList():
+def get_user_list():
     return userData
 
 # Displaying single user based on id
 @app.get("/user/{id}")
-def getItem(id:int):
+def get_user_by_id(id:int):
     return userData[id]
+
+# Adding a new user
+@app.post("/users/add")
+async def add_user(new_user: schemas.User):
+    # 1. Convert the incoming Pydantic model to a Python Dictionary
+    user_dict = new_user.model_dump()
+    
+    # 2. Check if the user_id already exists to prevent duplicates
+    if any(u['user_id'] == user_dict['user_id'] for u in userData):
+        raise HTTPException(status_code=400, detail="User ID already exists")
+
+    # 3. Add the dictionary to your list
+    userData.append(user_dict)
+    
+    return {"message": "User added successfully", "data": user_dict}
 
 # --------------- Resume Routes ------------------------
 # Displaying resume list
 @app.get("/resume/list")
-def getResumeList():
+def get_resume_list():
     return resumeData
 
 # Displaying single resume based on id
 @app.get("/resume/{id}")
-def getItem(id:int):
+def get_resume_by_id(id:int):
     return resumeData[id]
+
+# Adding a new resume
+@app.post("/resume/add")
+async def add_resume(new_resume: schemas.Resume):
+    resume_dict = new_resume.model_dump()
+
+    if any(r['resume_id'] == resume_dict['resume_id'] for r in resumeData):
+        raise HTTPException(status_code=400, detail="Resume already exists")
+        
+    resumeData.append(resume_dict)
+
+    return {"message": "Resume added successfully", "data": resume_dict}
+
+
+
