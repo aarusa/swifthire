@@ -13,7 +13,12 @@ def get_resume_list():
 # Displaying single resume based on id
 @router.get("/{id}")
 def get_resume_by_id(id:int):
-    return resumeData[id]
+    for resume in resumeData:
+        if resume["resume_id"] == id:
+            return resume
+        
+    raise HTTPException(status_code=404, detail="Resume not found")
+    # return resumeData[id]
 
 # Adding a new resume
 @router.post("/add")
