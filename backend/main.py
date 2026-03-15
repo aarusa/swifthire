@@ -506,4 +506,6 @@ async def add_resume(new_resume: schemas.Resume):
     return {"message": "Resume added successfully", "data": resume_dict}
 
 
+# --------------- Resume Routes ------------------------
+
 
