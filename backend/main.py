@@ -1,8 +1,7 @@
 import uvicorn
 from fastapi import FastAPI, HTTPException, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
-from routers import user_routes, resume_routes
-from pydantic import BaseModel
+from routers.v1 import user_routes, resume_routes
 from typing import List
 import schemas
 
