@@ -14,7 +14,7 @@ client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 router = APIRouter()
 
-# Define our "Mold" (Pydantic Model)
+# Candidate Schema
 class CandidateProfile(BaseModel):
     name: str
     email: str
