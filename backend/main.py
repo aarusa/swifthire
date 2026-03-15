@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from routes import user_routes, resume_routes
 from pydantic import BaseModel
@@ -22,11 +22,20 @@ app.add_middleware(
     allow_headers=['*'],
 )
    
-# --------------- Home Routes ------------------------
+# ------------ System Routes --------------
 @app.get('/')
 def home():
-    return {'message': 'SwiftHire Backend is live.'}
+    return {
+        "status": "online",
+        "message": "SwiftHire Backend is live",
+        "version": "v1"
+    }
 
-# Register route modules
-app.include_router(user_routes.router, prefix="/user", tags=["Users"])
-app.include_router(resume_routes.router, prefix="/resume", tags=["Resumes"])
+# ------------ API Versioning --------------
+api_v1 = APIRouter()
+
+# ------------ Registering API Routes --------------
+api_v1.include_router(user_routes.router, prefix="/user", tags=["Users"])
+api_v1.include_router(resume_routes.router, prefix="/resume", tags=["Resumes"])
+
+app.include_router(api_v1, prefix="/api/v1")
