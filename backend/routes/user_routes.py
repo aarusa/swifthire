@@ -13,7 +13,11 @@ def get_user_list():
 # Displaying single user based on id
 @router.get("/{id}")
 def get_user_by_id(id:int):
-    return userData[id]
+    for user in userData:
+        if user["user_id"] == id:
+            return user
+    
+    raise HTTPException(status_code=404, detail="User not found")
 
 # Adding a new user
 @router.post("/add")
