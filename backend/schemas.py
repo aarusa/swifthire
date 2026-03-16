@@ -26,3 +26,18 @@ class Resume(BaseModel):
     skills: List[str] # Validates that this is a list of strings
     education: str
 
+# --------------- Candidate Model ------------------------
+class CandidateProfile(BaseModel):
+    name: str
+    email: str
+    skills: List[str]
+    experience_summary: str
+    years_of_experience: int
+
+# --------------- Job Description Model ------------------------
+class JobDescription(BaseModel):
+    title: str
+    company: str
+    required_skills: List[str]
+    min_years_experience: int
+    description_text: str

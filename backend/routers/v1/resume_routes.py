@@ -7,20 +7,13 @@ from pydantic import BaseModel
 from typing import List
 import schemas
 from data.resumes import resumeData
+from schemas import CandidateProfile
 
 # Load Environment Variables
 load_dotenv()
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 router = APIRouter()
-
-# Candidate Schema
-class CandidateProfile(BaseModel):
-    name: str
-    email: str
-    skills: List[str]
-    experience_summary: str
-    years_of_experience: int
 
 # --------------- Resume Routes ------------------------
 # Displaying resume list
@@ -51,6 +44,7 @@ async def add_resume(new_resume: schemas.Resume):
     return {"message": "Resume added successfully", "data": resume_dict}
 
 
+# Resume parsing
 @router.post("/upload")
 async def upload_resume(file: UploadFile = File(...)):
     # Validate file type
