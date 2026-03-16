@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI, HTTPException, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
-from routers.v1 import user_routes, resume_routes, job_routes
+from routers.v1 import user_routes, resume_routes, job_routes, match_routes
 from typing import List
 import schemas
 
@@ -37,5 +37,6 @@ api_v1 = APIRouter()
 api_v1.include_router(user_routes.router, prefix="/user", tags=["Users"])
 api_v1.include_router(resume_routes.router, prefix="/resume", tags=["Resumes"])
 api_v1.include_router(job_routes.router, prefix="/jobs", tags=["Jobs"])
+api_v1.include_router(match_routes.router, prefix="/api/v1/match", tags=["Matching"])
 
 app.include_router(api_v1, prefix="/api/v1")
