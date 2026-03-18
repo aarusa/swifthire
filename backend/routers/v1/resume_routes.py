@@ -69,7 +69,7 @@ async def upload_resume(file: UploadFile = File(...)):
     # --- CHUNK 2 LOGIC: AI Analysis ---
     try:
         response = client.models.generate_content(
-            model="models/gemini-2.5-flash", # Latest stable 2026 version
+            model="models/gemini-2.5-flash", 
             contents=f"Extract professional details from this resume text: {raw_text}",
             config={
                 "response_mime_type": "application/json",
